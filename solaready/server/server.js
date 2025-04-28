@@ -2,20 +2,18 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
-const session = require("express-session");
-const MongoStore = require('connect-mongo');
 const basicRoutes = require("./routes/index");
-const authRoutes = require("./routes/authRoutes");
 const { connectDB } = require("./config/database");
 const cors = require("cors");
 
 if (!process.env.DATABASE_URL) {
-  console.error("Error: DATABASE_URL variables in .env missing.");
+  console.error("Error: DATABASE_URL variable in .env missing.");
   process.exit(-1);
 }
 
 const app = express();
 const port = process.env.PORT || 3000;
+
 // Pretty-print JSON responses
 app.enable('json spaces');
 // We want to be consistent with URL paths, so we enable strict routing
@@ -35,8 +33,6 @@ app.on("error", (error) => {
 
 // Basic Routes
 app.use(basicRoutes);
-// Authentication Routes
-app.use('/api/auth', authRoutes);
 
 // If no routes handled the request, it's a 404
 app.use((req, res, next) => {
@@ -53,3 +49,4 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
